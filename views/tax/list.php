@@ -3,10 +3,9 @@
     <!-- <a class="button" href="<?php echo $base_url ?>/index.php/product/add">Thêm sản phẩm mới</a> -->
     </p>
     <?php 
-    if(empty($data)){
-    echo "Không tồn tại sản phẩm nào";
-    exit();
-    }?>
+
+    ?>
+    <a class="button btn" href="export.php">Export</a>
     <div class ="search-form">
     <form  action="">
         <input name="q" type="text" placeholder="Nhập từ khóa tìm kiếm">
@@ -24,15 +23,7 @@
     </tr>
 
     <?php
-    // foreach($data as $product){
-    // echo "<tr>";
-    // echo "<td><a href='$base_url/index.php/product/view/{$product["id"]}'>{$product['name']}</a></td>";
-    // echo "<td><img src = '$base_url/upload/{$product['image']} '></td>";
-    // echo "<td>{$product['price']}</td>";
-    // echo "<td>".(($product['active'])? "hiển thị":"ẩn")."</td>";
-    // echo "<td><a class='button' href='$base_url/index.php/product/edit/{$product["id"]}'>Sửa</a> <a class='button' onclick='deleteProduct({$product["id"]})'>Xóa</a></td>";
-    // echo "</tr>";
-    // }
+
     echo "OK";
     ?>
     </table>

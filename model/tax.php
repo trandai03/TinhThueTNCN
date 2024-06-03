@@ -1,7 +1,9 @@
 <?php
 
 // namespace model;
-require_once("database.php");
+require_once(dirname(__DIR__) . "/database.php");
+
+
 class tax
 {
     private $db;
