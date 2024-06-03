@@ -1,6 +1,6 @@
 <?php
 
-namespace model;
+// namespace model;
 require_once("database.php");
 class tax
 {

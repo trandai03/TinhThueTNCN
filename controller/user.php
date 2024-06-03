@@ -2,6 +2,6 @@
 
 namespace controller;
 
-class UserController{
+class userController{
     
 }
