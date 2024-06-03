@@ -2,9 +2,11 @@
     <p class="action-buttons">
     <!-- <a class="button" href="<?php echo $base_url ?>/index.php/product/add">Thêm sản phẩm mới</a> -->
     </p>
-    <?php 
-
-    ?>
+    <?php
+    if(empty($data)){
+        echo "Không tồn tại sản phẩm nào";
+        exit();
+    }?>
     <p class="action-buttons">
         <a class="button" href="./export.php">Xuất báo cáo</a>
     </p>
@@ -17,17 +19,26 @@
 
     <table width="800px" border=1 cellspacing="0" align="center">
     <tr>
-    <th>Tên sản phẩm</th>
-    <th>Hình ảnh</th>
-    <th>Giá</th>
-    <th>Trạng thái</th>
-    <th>Hành động</th>
+    <th>Tháng</th>
+    <th>Tổng thu nhập</th>
+    <th>Số người phụ thuộc</th>
+    <th>Thuế phải trả</th>
+    <th>Trạng thái</th>
     </tr>
-
-    <?php
-
-    echo "OK";
-    ?>
+        <?php
+        foreach($data as $tax){
+            echo "<tr>";
+            echo "<td>{$tax['thang']}</td>";
+            echo "<td>{$tax['tongThuNhap']}</td>";
+            echo "<td>{$tax['soNguoiPhuThuoc']}</td>";
+            if($tax['price']=="NO"){
+                echo "Chưa đóng";
+            }else{
+                echo "Đã đóng";
+            }
+            echo "</tr>";
+        }
+        ?>
     </table>
     <!-- <script>
     function deleteProduct(id){
