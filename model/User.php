@@ -2,7 +2,7 @@
 
 namespace model;
 
-class User
-{
+class User{
+   
 
 }
