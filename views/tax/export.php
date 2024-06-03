@@ -2,26 +2,33 @@
 
 require_once("../../model/tax.php");
 
+require '../../vendor/autoload.php';
+
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 $taxModel = new tax();
 $taxList = $taxModel->getAllthue();
 print_r($taxList);
-$excel =new \PHPExcel();
-$excel->setActiveSheet -> setTitle("Danh sach thue");
-$excel -> setActiveSheetIndex(0);
+$spreadsheet = new Spreadsheet();
+$sheet = $spreadsheet->getActiveSheet();
 
-$excel -> getActiveSheet() -> setCellValue('A1' , 'Thang');
-$excel -> getActiveSheet() -> setCellValue('B1' , 'Tong thu nhap');
-$excel -> getActiveSheet() -> setCellValue('C1' , 'So nguoi phu thuoc');
-$excel -> getActiveSheet() -> setCellValue('D1' , 'Thue');
-
-$numRow =2 ;
-foreach($taxList as $tax){
-    $excel -> getActiveSheet() -> setCellValue('A' , $numRow , $tax['thang']);
-    $excel -> getActiveSheet() -> setCellValue('B' , $numRow , $tax['tongThuNhap']);
-    $excel -> getActiveSheet() -> setCellValue('C' , $numRow , $tax['soNguoiPhuThuoc']);
-    $excel -> getActiveSheet() -> setCellValue('D' , $numRow , $tax['thue']);
+$header = ['Thang','Tong thu nhap','So nguoi phu thuoc','Thue'];
+foreach ($header as $index => $value) {
+    $sheet->setCellValue([$index+1,1],$value);
 }
-
-
+$count=1;
+for ($i = 0, $l = sizeof($taxList); $i < $l; $i++) { // row $i
+    $j = 0;
+    foreach ($taxList[$i] as $k => $v) { // column $j
+        $sheet->setCellValue([$j + 1, ($i + 1 + 1)], $v);
+        $j++;
+    }
+}
+$writer = new Xlsx($spreadsheet);
+ob_end_clean();
+header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+header('Content-Disposition: attachment; filename="file_export.xlsx"');
+$writer->save('php://output');
+header("Location: list.php");
 ?>

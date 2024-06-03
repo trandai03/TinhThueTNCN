@@ -5,7 +5,9 @@
     <?php 
 
     ?>
-    <a class="button btn" href="export.php">Export</a>
+    <p class="action-buttons">
+        <a class="button" href="./export.php">Xuất báo cáo</a>
+    </p>
     <div class ="search-form">
     <form  action="">
         <input name="q" type="text" placeholder="Nhập từ khóa tìm kiếm">
