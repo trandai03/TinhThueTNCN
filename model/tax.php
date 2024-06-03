@@ -18,6 +18,10 @@ class tax
         return $this->db->getById('thue', $id);
     }
 
+    public function getTaxByUserID($user_id){
+        return $this->db->getByUserID('thue', $user_id);
+    }
+
     public function addTax($thue) {
         return $this->db->insert('thue', $thue);
     }

@@ -24,6 +24,12 @@ class Database {
         return mysqli_fetch_array($result, MYSQLI_ASSOC);
     }
 
+    public function getByUserID($table, $id) {
+        $sql = "SELECT * FROM $table WHERE user_id = $id";
+        $result = mysqli_query($this->conn, $sql);
+        return mysqli_fetch_array($result, MYSQLI_ASSOC);
+    }
+
     public function insert($table, $data) {
         $fields = implode(',', array_keys($data));
         $values = implode("','", $data);
