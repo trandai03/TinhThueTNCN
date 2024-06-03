@@ -1,2 +1,16 @@
 {
+    "name": "user/tinh-thue-tncn",
+    "type": "project",
+    "autoload": {
+
+    },
+    "authors": [
+        {
+            "name": "trandai03",
+            "email": "21011589@st.phenikaa-uni.edu.vn"
+        }
+    ],
+    "require": {
+        "phpoffice/phpspreadsheet": "^2.1"
+    }
 }
