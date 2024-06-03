@@ -24,12 +24,18 @@
                 <label for="soNguoi">Số người phụ thuộc:</label>
                 <input type="number" class="form-control" id="soNguoi" name="so_nguoi" require>
             </div>
+
+            <div class="form-group">
+                <label for="thang">Tháng: </label>
+                <input type="number" class="form-control" id="thang" name="thang" require>
+            </div>
+
             <button type="submit" class="btn btn-primary">Tính Thuế</button>
         </form>
-        <div class="result">
+        <!-- <div class="result">
             <h3>Kết quả:</h3>
             <p id="taxResult"></p>
-        </div>
+        </div> -->
     </div>
 
     <!-- Bootstrap JS and dependencies -->
@@ -37,6 +43,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <!-- Custom JS -->
-    <script src="tax.js"></script>
+    <!-- <script src="tax.js"></script> -->
 </body>
 </html>

@@ -42,35 +42,82 @@ class taxController{
     }
 
     function calcTax_action(){
-        if(isset($_POST['thu_nhap']) && isset($_POST['so_nguoi']) && $_POST['thu_nhap'] != "" && $_POST['so_nguoi'] != ""){
+        if(isset($_POST['thu_nhap']) && isset($_POST['so_nguoi']) && isset($_POST['thang']) && $_POST['thang'] != "" && $_POST['thu_nhap'] != "" && $_POST['so_nguoi'] != ""){
             $thu_nhap = $_POST['thu_nhap'];
             $so_nguoi = $_POST['so_nguoi'];
+            $thang = $_POST['thang'];
 
             $giam_ca_nhan = 11000000;
             $giam_nguoi_phu_thuoc = 4400000;
 
             $thu_nhap_thue = $thu_nhap - $giam_ca_nhan - $so_nguoi * $giam_nguoi_phu_thuoc;
-
+            $thue = 0;
             if ($thu_nhap_thue <= 0) {
-                return 0;
+                $thue = 0;
             } else {
                 if ($thu_nhap_thue <= 5 * 1000000) {
-                    return $thu_nhap_thue * 5 / 100;
+                    $thue =  $thu_nhap_thue * 5 / 100;
                 } else if ($thu_nhap_thue <= 10 * 1000000) {
-                    return $thu_nhap_thue * 10 / 100 - 0.25 * 1000000;
+                    $thue = $thu_nhap_thue * 10 / 100 - 0.25 * 1000000;
                 } else if ($thu_nhap_thue <= 18 * 1000000) {
-                    return $thu_nhap_thue * 15 / 100 - 0.75 * 1000000;
+                    $thue = $thu_nhap_thue * 15 / 100 - 0.75 * 1000000;
                 } else if ($thu_nhap_thue <= 32 * 1000000) {
-                    return $thu_nhap_thue * 20 / 100 - 1.65 * 1000000;
+                    $thue = $thu_nhap_thue * 20 / 100 - 1.65 * 1000000;
                 } else if ($thu_nhap_thue <= 52 * 1000000) {
-                    return $thu_nhap_thue * 25 / 100 - 3.25 * 1000000;
+                    $thue = $thu_nhap_thue * 25 / 100 - 3.25 * 1000000;
                 } else if ($thu_nhap_thue <= 80 * 1000000) {
-                    return $thu_nhap_thue * 30 / 100 - 5.85 * 1000000;
+                    $thue = $thu_nhap_thue * 30 / 100 - 5.85 * 1000000;
                 } else {
-                    return $thu_nhap_thue * 35 / 100 - 9.85 * 1000000;
+                    $thue = $thu_nhap_thue * 35 / 100 - 9.85 * 1000000;
                 }
             }
+
+            $tax['tongThuNhap'] = $thu_nhap;
+            $tax['soNguoiPhuThuoc'] = $so_nguoi;
+            $tax['thang'] = $thang;
+            $tax['thue'] = $thue;
+            $tax['status'] = "NO";
+
+            $taxModel = new tax();
+            if($taxModel->addTax($tax)){
+                // $message = "Thêm thue mới thành công";
+            }else{
+                // $message  = "Thêm thue mới không thành công";
+            }
+            $data = $taxModel->getTaxByUserID('1');
+            return ["views/tax/pay_tax.php",$data];
         }        
+    }
+
+    function insert_action(){
+        if(isset($_POST['name']) && $_POST['name']!=""){
+            $product['name'] = $_POST['name'];
+            $product['price'] = ($_POST['price'])??0;
+            $product['description'] = ($_POST['description'])??'';
+            $product['active'] = ($_POST['active'])??0;
+            $uploadDir = './upload/';
+            $product['image'] = "";
+            if (isset($_FILES['image'])) {
+                $file = $_FILES['image'];
+                 $newname =  $file['name'].time();
+                $uploadPath = $uploadDir . $newname;
+                if (move_uploaded_file($file['tmp_name'], $uploadPath)){
+                    $product['image']= $newname;
+                }
+            }
+            $proModel = new Product();
+            if($proModel->insert($product)){
+                $message = "Thêm sản phẩm mới thành công";
+            }else{
+                $message  = "Thêm sản phẩm mới không thành công";
+            }
+            $data = $proModel->getAll();
+            // $data = getAll('products');
+            $data['message'] = $message;
+            return ["views/products/list.php",$data];
+        }else{
+            return ["views/products/insertform.php",[]];
+        }
     }
 }
 ?>
