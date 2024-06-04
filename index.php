@@ -28,6 +28,7 @@
    
 
     include "controller/".$controller.".php";
+    $controller = $controller."Controller";
     $controller = new $controller();
     $action .= "_action";
   
