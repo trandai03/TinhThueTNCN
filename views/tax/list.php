@@ -8,7 +8,7 @@
         exit();
     }?>
     <p class="action-buttons">
-        <a class="button" href="./export.php">Xuất báo cáo</a>
+        <a class="button" href="<?php echo $base_url ?>/index.php/tax/export">Xuất báo cáo</a>
     </p>
     <div class ="search-form">
     <form  action="">
@@ -31,10 +31,12 @@
             echo "<td>{$tax['thang']}</td>";
             echo "<td>{$tax['tongThuNhap']}</td>";
             echo "<td>{$tax['soNguoiPhuThuoc']}</td>";
-            if($tax['price']=="NO"){
-                echo "Chưa đóng";
+            echo "<td>{$tax['thue']}</td>";
+
+            if($tax['status']=="NO"){
+                echo "<td>Chưa đóng</td>";
             }else{
-                echo "Đã đóng";
+                echo "<td>Đã đóng</td>";
             }
             echo "</tr>";
         }

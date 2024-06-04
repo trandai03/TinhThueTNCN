@@ -14,10 +14,11 @@
     $controller = "tax";
     $action = "index";
     if(isset($_SERVER["PATH_INFO"])){
+
         $uri = explode("/",$_SERVER["PATH_INFO"]);
         $uri = array_diff($uri,[""]);
     }
-    
+
     switch (count($uri)){
         case 0: break;
         case 1: $controller = $uri[1]; break;
@@ -28,7 +29,9 @@
    
 
     include "controller/".$controller.".php";
+    $controller = $controller."Controller";
     $controller = new $controller();
+
     $action .= "_action";
   
     if(empty($para)){
