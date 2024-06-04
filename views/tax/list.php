@@ -1,15 +1,13 @@
 	
     <p class="action-buttons">
-    <!-- <a class="button" href="<?php echo $base_url ?>/index.php/product/add">Thêm sản phẩm mới</a> -->
+        <a class="button" href="<?php echo $base_url ?>/index.php/tax/calc">Tính thuế</a>
+        <a class="button" href="<?php echo $base_url ?>/index.php/tax/export">Xuất báo cáo</a>
     </p>
     <?php
     if(empty($data)){
-        echo "Không tồn tại sản phẩm nào";
+        echo "Không tồn tại thông tin thuế nào";
         exit();
     }?>
-    <p class="action-buttons">
-        <a class="button" href="<?php echo $base_url ?>/index.php/tax/export">Xuất báo cáo</a>
-    </p>
     <div class ="search-form">
     <form  action="">
         <input name="q" type="text" placeholder="Nhập từ khóa tìm kiếm">
