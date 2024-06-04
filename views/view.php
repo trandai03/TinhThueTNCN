@@ -18,10 +18,9 @@
 		
 		<h1><?php echo $title??"" ?></h1>
 		<ul class="menu">
-			<li><a href="<?php echo $base_url."/index.php/tax"?>">Quản lý danh mục</a></li>
-			<li><a href="<?php echo $base_url."/index.php/tax"?>">Quản lý sản phẩm</a></li>
-			<li><a href="<?php echo $base_url . "/index.php/user"?>">Quản lý người dùng</a></li>
-			<li><a href="<?php echo $base_url . "/index.php/user"?>">Quản lý đơn hàng</a></li>
+			<li><a href="<?php echo $base_url."/index.php/tax"?>">Home</a></li>
+            <li><a  href="<?php echo $base_url ?>/index.php/tax/calc">Tính thuế</a></li>
+
 		</ul>
 		<main>
 			<?php include($view); ?>
