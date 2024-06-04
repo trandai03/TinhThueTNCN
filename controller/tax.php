@@ -124,11 +124,18 @@ class taxController{
             $sheet->setCellValue([5,$numRow],$tax['status'] );
             $numRow++;
         }
-        $writer = new Xlsx($spreadsheet);
+
         ob_end_clean();
+
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment; filename="file_export.xlsx"');
+        //header('Cache-Control: max-age=0');
+        //$writer = IOFactory::createWriter($sheet, 'Xlsx');
+//        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $writer = new Xlsx($spreadsheet);
         $writer->save('php://output');
+
+
         
         return ["views/tax/list.php", []];
     }
