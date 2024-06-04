@@ -1,7 +1,5 @@
 	
-    <p class="action-buttons">
-    <!-- <a class="button" href="<?php echo $base_url ?>/index.php/product/add">Thêm sản phẩm mới</a> -->
-    </p>
+
     <?php
     if(empty($data)){
         echo "Không tồn tại sản phẩm nào";
