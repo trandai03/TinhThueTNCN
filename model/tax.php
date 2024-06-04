@@ -7,6 +7,7 @@ require_once(dirname(__DIR__) . "/database.php");
 class tax
 {
     private $db;
+    public $table = 'thue';
 
     public function __construct() {
         $this->db = new Database();
@@ -37,7 +38,7 @@ class tax
     }
 
     public function searchthue($query) {
-        $sql = "SELECT * FROM thue WHERE name LIKE '%$query%' OR description LIKE '%$query%'";
+        $sql = "SELECT * FROM thue WHERE thang LIKE '%$query%'";
         return $this->db->exeQuery($sql);
     }
 }

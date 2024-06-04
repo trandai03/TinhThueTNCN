@@ -11,7 +11,9 @@
         <p>Thu nhập hàng tháng: <?php echo $data['tongThuNhap']; ?> VND</p>
         <p>Số người phụ thuộc: <?php echo $data['soNguoiPhuThuoc']; ?></p>
         <p>Thuế của tháng này là: <?php echo $data['thue']?></p>
+    </div>
 
+    <div class="thu-tien">
         
     </div>
 </body>

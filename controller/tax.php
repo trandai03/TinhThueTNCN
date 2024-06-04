@@ -29,10 +29,7 @@ class taxController{
         if(isset($_GET['q']) && $_GET['q']!=''){
             $q = $_GET['q'];
             $taxModel = new tax();
-            // $table = $proModel->table;
-            // $sql = "select * from $table where name like '%$q%' or description like '%$q%'";
-            // // $data = exe_query($sql);
-            // $data = $proModel->exe_query($sql);
+            $data = $taxModel->searchthue($q);
         }else{
             $taxModel = new tax();
             $data = $taxModel->getAllthue();
@@ -92,36 +89,12 @@ class taxController{
         }        
     }
 
-    function insert_action(){
-        if(isset($_POST['name']) && $_POST['name']!=""){
-            $product['name'] = $_POST['name'];
-            $product['price'] = ($_POST['price'])??0;
-            $product['description'] = ($_POST['description'])??'';
-            $product['active'] = ($_POST['active'])??0;
-            $uploadDir = './upload/';
-            $product['image'] = "";
-            if (isset($_FILES['image'])) {
-                $file = $_FILES['image'];
-                 $newname =  $file['name'].time();
-                $uploadPath = $uploadDir . $newname;
-                if (move_uploaded_file($file['tmp_name'], $uploadPath)){
-                    $product['image']= $newname;
-                }
-            }
-            $proModel = new Product();
-            if($proModel->insert($product)){
-                $message = "Thêm sản phẩm mới thành công";
-            }else{
-                $message  = "Thêm sản phẩm mới không thành công";
-            }
-            $data = $proModel->getAll();
-            // $data = getAll('products');
-            $data['message'] = $message;
-            return ["views/products/list.php",$data];
-        }else{
-            return ["views/products/insertform.php",[]];
-        }
+    
+    function payTax_action(){
+        
     }
+
+
     function export_action()
     {
         $taxModel = new tax();
