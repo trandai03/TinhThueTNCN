@@ -174,16 +174,16 @@
                             <label for="login_password" class="label">Mật Khẩu</label>
                             <input id="login_password" name="login_password" type="password" class="input" data-type="password">
                         </div>
-                        <div class="group">
+                        <!-- <div class="group">
                             <input id="check" type="checkbox" class="check" checked>
                             <label for="check"><span class="icon"></span> Ghi nhớ đăng nhập</label>
-                        </div>
+                        </div> -->
                         <div class="group">
                             <input type="submit" name="login" class="button" value="Đăng nhập">
                         </div>
                         <div class="hr"></div>
                         <div class="foot-lnk">
-                            <a href="#">Quên mật khẩu ?</a>
+                            <!-- <a href="#">Quên mật khẩu ?</a> -->
                         </div>
                     </form>
                 </div>
@@ -210,7 +210,7 @@
                             <input id="reg_address" name="reg_address" type="text" class="input">
                         </div>
                         <div class="group">
-                            <label for="reg_email" class="label">Email Address</label>
+                            <label for="reg_email" class="label">Email</label>
                             <input id="reg_email" name="reg_email" type="text" class="input">
                         </div>
                         <div class="group">

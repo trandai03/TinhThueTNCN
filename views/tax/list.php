@@ -14,14 +14,21 @@
         <main>
 
             <p class="action-buttons">
-
                 <a class="button" href="<?php echo $base_url ?>/index.php/tax/export">Xuất báo cáo</a>
+                <?php 
+                    if(isset($_SESSION['user_id'])){
+                ?>
+                <a class="button" href="<?php echo $base_url?>/index.php/tax/logout">Đăng xuất</a>
+                <?php
+                    }
+                ?>
             </p>
             <?php
-            if(empty($data)){
+            if(empty($data) && isset($_SESSION['user_id']) == false){
                 echo "Không tồn tại thông tin thuế nào";
                 exit();
             }?>
+            
             <div class ="search-form">
                 <form  action="">
                     <input name="q" type="text" placeholder="Nhập từ khóa tìm kiếm">
@@ -41,7 +48,9 @@
                 </thead>
                 <tbody>
                 <?php
+                // print_r($data);
                 foreach($data as $tax){
+                    
                     echo "<tr>";
                     echo "<td>{$tax['thang']}</td>";
                     echo "<td>{$tax['tongThuNhap']}</td>";

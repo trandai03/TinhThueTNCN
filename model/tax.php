@@ -42,7 +42,11 @@ class tax
         return $this->db->exeQuery($sql);
     }
 
-    public function Query($sql){
+    public function exeQuery($sql){
         return $this->db->exeQuery($sql);
+    }
+
+    public function query($sql){
+        return $this->db->Query($sql);
     }
 }

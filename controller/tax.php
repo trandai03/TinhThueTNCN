@@ -26,15 +26,23 @@ class taxController{
     } 
 
     function index_action(){
-        if(isset($_GET['q']) && $_GET['q']!=''){
-            $q = $_GET['q'];
-            $taxModel = new tax();
-            $data = $taxModel->searchthue($q);
-        }else{
-            $taxModel = new tax();
-            $data = $taxModel->getAllthue();
-        }		
-        return ["views/tax/list.php", $data];
+        if(isset($_SESSION['user_id'])){
+            $id = $_SESSION['user_id'];
+            if(isset($_GET['q']) && $_GET['q']!=''){
+                $q = $_GET['q'];
+                $taxModel = new tax();
+                $data = $taxModel->searchthue($q);
+            }else{
+                $taxModel = new tax();
+                $table = $taxModel->table;
+                $sql = "SELECT * FROM $table WHERE user_id = $id order by thang";
+                $data = $taxModel->Query($sql);
+            }		
+            return ["views/tax/list.php", $data];
+        }
+        else{
+            return ["views/tax/login.php", []];
+        }
     }
 
     function calc_action(){
@@ -71,20 +79,39 @@ class taxController{
                     $thue = $thu_nhap_thue * 35 / 100 - 9.85 * 1000000;
                 }
             }
-
+            if(!isset($_SESSION['user_id'])){
+                return ["views/tax/login.php", []];
+            }
+            $user_id = $_SESSION['user_id'];
             $tax['tongThuNhap'] = $thu_nhap;
             $tax['soNguoiPhuThuoc'] = $so_nguoi;
             $tax['thang'] = $thang;
             $tax['thue'] = $thue;
             $tax['status'] = "NO";
-
+            $tax['user_id'] = $user_id;
+            $status = "NO";
+            
             $taxModel = new tax();
+            $table = $taxModel->table;
+            $sql = "SELECT COUNT(*) AS so_luong_ban_ghi FROM $table";
+            $result = $taxModel->query($sql);
+            $row = $result->fetch_assoc();
+            $count = (int)$row['so_luong_ban_ghi'];
+            $id = $count + 1;
+            $tax['id'] = $id;
+            
+            
             if($taxModel->addTax($tax)){
-                // $message = "Thêm thue mới thành công";
+                // echo "OK";
             }else{
-                // $message  = "Thêm thue mới không thành công";
+               
+                echo "Ko";
             }
-            $data = $taxModel->getTaxByUserID('1');
+
+            $sql = "SELECT * FROM $table WHERE user_id = $user_id and thang = $thang";
+            $data = $taxModel->exeQuery($sql);
+            
+            // $data = $taxModel->getTaxByUserID($user_id);
             return ["views/tax/pay_tax.php",$data];
         }        
     }
@@ -105,14 +132,24 @@ class taxController{
 
             $userModel = new User();
             $table = $userModel->table;
-            $sql = "SELECT * FROM $table WHERE username = '$username'";
-            $result = $userModel->exe_query($sql);
         
+            $sql = "SELECT * FROM $table WHERE username = '$username'";
+            $result = $userModel->query($sql);
+            $taxModel = new tax();
+            $table = $taxModel->table;
+            
             if ($result->num_rows > 0) {
                 $row = $result->fetch_assoc();
-                if (password_verify($password, $row['password'])) {
+                $id = $row['id'];
+                // password_verify($password, $row['password'])
+                if ($password == $row['password']) {
                     $_SESSION['username'] = $username;
-                    echo "Login successful!";
+                    $_SESSION['user_id'] = $id;
+                    
+                    $sql = "SELECT * FROM $table WHERE user_id = $id order by thang";
+                    $data = $taxModel->Query($sql);
+                    // print_r($data);
+                    return ["views/tax/list.php", $data];
                 } else {
                     echo "Invalid password.";
                 }
@@ -130,28 +167,41 @@ class taxController{
             $phone = $_POST['reg_phone'];
             // $address = $_POST['reg_address'];
             $email = $_POST['reg_email'];
-        
+            
+            
             // Check if username already exists
             $userModel = new User();
-            $sql = "SELECT * FROM 'users' WHERE username = '$username'";
+            $table = $userModel->table;
+            $sql = "SELECT * FROM $table WHERE username = '$username'";
             $result = $userModel->query($sql);
         
-            if ($result) {
+            if ($result->num_rows > 0) {
                 echo "Username already exists!";
             } else {
-                $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-        
-                $sql = "INSERT INTO 'users' (username, fullname, password, phone, email) VALUES ('$username', '$fullname', '$hashed_password', '$phone', '$email')";
+                // $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+                $sql = "SELECT COUNT(*) AS so_luong_ban_ghi FROM $table";
+                $result = $userModel->query($sql);
+                $row = $result->fetch_assoc();
+                $count = (int)$row['so_luong_ban_ghi'];
+                $id = $count + 1;
+                $sql = "INSERT INTO $table (id, username, fullname, password, phone, email) VALUES ('$id', '$username', '$fullname', '$password', '$phone', '$email')";
                 
                 if ($userModel->query($sql) === TRUE) {
-                    echo "Registration successful!";
+                    // echo "Registration successful!";
+                    return ["views/tax/login.php", []];
                 } else {
-                   
                     echo "Đăng kí thất bại";
                 }
             }
         }
         
+    }
+
+    function logout_action(){
+        $_SESSION = [];
+        session_unset();
+        session_destroy();
+        return ["views/tax/login.php", []];
     }
 
     function export_action()

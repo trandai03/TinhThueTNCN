@@ -18,9 +18,26 @@
 		
 		<h1><?php echo $title??"" ?></h1>
 		<ul class="menu">
+			<?php 
+				if(isset($_SESSION['user_id'])){
+			?>
 			<li><a href="<?php echo $base_url."/index.php/tax"?>">Home</a></li>
+			<?php
+				}
+			?>
             <li><a  href="<?php echo $base_url ?>/index.php/tax/calc">Tính thuế</a></li>
+			<?php 
+				if(!isset($_SESSION['user_id'])){
+			?>
 			<li><a href="<?php echo $base_url?>/index.php/tax/login">Đăng nhập</a></li>
+			<?php
+				}
+				else{
+			?>
+			<li><a href="<?php echo $base_url?>/index.php/tax/logout">Đăng xuất</a></li>
+			<?php		
+				}
+			?>
 		</ul>
 		<?php 
 		?>
