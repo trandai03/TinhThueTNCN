@@ -94,6 +94,65 @@ class taxController{
         
     }
 
+    function login_action(){
+        return ["views/tax/login.php",[]];
+    }
+
+    function signin_action(){
+        if (isset($_POST['login'])) {
+            $username = $_POST['login_username'];
+            $password = $_POST['login_password'];
+
+            $userModel = new User();
+            $table = $userModel->table;
+            $sql = "SELECT * FROM $table WHERE username = '$username'";
+            $result = $userModel->exe_query($sql);
+        
+            if ($result->num_rows > 0) {
+                $row = $result->fetch_assoc();
+                if (password_verify($password, $row['password'])) {
+                    $_SESSION['username'] = $username;
+                    echo "Login successful!";
+                } else {
+                    echo "Invalid password.";
+                }
+            } else {
+                echo "No user found with this username.";
+            }
+        }
+    }
+
+    function signup_action(){
+        if (isset($_POST['register'])) {
+            $username = $_POST['reg_username'];
+            $fullname = $_POST['reg_fullname'];
+            $password = $_POST['reg_password'];
+            $phone = $_POST['reg_phone'];
+            // $address = $_POST['reg_address'];
+            $email = $_POST['reg_email'];
+        
+            // Check if username already exists
+            $userModel = new User();
+            $sql = "SELECT * FROM 'users' WHERE username = '$username'";
+            $result = $userModel->query($sql);
+        
+            if ($result) {
+                echo "Username already exists!";
+            } else {
+                $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+        
+                $sql = "INSERT INTO 'users' (username, fullname, password, phone, email) VALUES ('$username', '$fullname', '$hashed_password', '$phone', '$email')";
+                
+                if ($userModel->query($sql) === TRUE) {
+                    echo "Registration successful!";
+                } else {
+                   
+                    echo "Đăng kí thất bại";
+                }
+            }
+        }
+        
+    }
 
     function export_action()
     {

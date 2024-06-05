@@ -2,7 +2,8 @@
     require_once("config.php") ;
 	require_once("database.php");
     require_once("model/tax.php");
-    require_once("model/user.php")
+    require_once("model/user.php");
+    session_start();
 ?>
 <?php
 	$view ="";

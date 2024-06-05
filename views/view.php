@@ -20,8 +20,10 @@
 		<ul class="menu">
 			<li><a href="<?php echo $base_url."/index.php/tax"?>">Home</a></li>
             <li><a  href="<?php echo $base_url ?>/index.php/tax/calc">Tính thuế</a></li>
-
+			<li><a href="<?php echo $base_url?>/index.php/tax/login">Đăng nhập</a></li>
 		</ul>
+		<?php 
+		?>
 		<main>
 			<?php include($view); ?>
 		</main>

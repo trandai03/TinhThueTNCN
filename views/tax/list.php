@@ -30,13 +30,16 @@
             </div>
 
             <table width="800px" border=1 cellspacing="0" align="center" class="table">
-                <tr>
-                    <th>Tháng</th>
-                    <th>Tổng thu nhập</th>
-                    <th>Số người phụ thuộc</th>
-                    <th>Thuế phải trả</th>
-                    <th>Trạng thái</th>
-                </tr>
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Tháng</th>
+                        <th>Tổng thu nhập</th>
+                        <th>Số người phụ thuộc</th>
+                        <th>Thuế phải trả</th>
+                        <th>Trạng thái</th>
+                    </tr>
+                </thead>
+                <tbody>
                 <?php
                 foreach($data as $tax){
                     echo "<tr>";
@@ -53,6 +56,7 @@
                     echo "</tr>";
                 }
                 ?>
+                </tbody>
             </table>
             <!-- <script>
     function deleteProduct(id){

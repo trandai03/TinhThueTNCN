@@ -57,5 +57,9 @@ class Database {
         $result = mysqli_query($this->conn, $sql);
         return $result->fetch_all(MYSQLI_ASSOC);
     }
+
+    public function Query($sql){
+        return mysqli_query($this->conn, $sql);
+    }
 }
 ?>

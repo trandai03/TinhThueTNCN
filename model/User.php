@@ -1,10 +1,11 @@
 <?php
 
 // namespace model;
-require_once("database.php");
+require_once(dirname(__DIR__) . "/database.php");
 class User
 {
     private $db;
+    public $table = 'users';
 
     public function __construct() {
         $this->db = new Database();
@@ -28,5 +29,9 @@ class User
 
     public function deleteUser($id) {
         return $this->db->delete('users', $id);
+    }
+
+    public function query($sql){
+        return $this->db->Query($sql);
     }
 }

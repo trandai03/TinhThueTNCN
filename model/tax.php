@@ -41,4 +41,8 @@ class tax
         $sql = "SELECT * FROM thue WHERE thang LIKE '%$query%'";
         return $this->db->exeQuery($sql);
     }
+
+    public function Query($sql){
+        return $this->db->exeQuery($sql);
+    }
 }
