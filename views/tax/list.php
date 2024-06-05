@@ -15,13 +15,6 @@
 
             <p class="action-buttons">
                 <a class="button" href="<?php echo $base_url ?>/index.php/tax/export">Xuất báo cáo</a>
-                <?php 
-                    if(isset($_SESSION['user_id'])){
-                ?>
-                <a class="button" href="<?php echo $base_url?>/index.php/tax/logout">Đăng xuất</a>
-                <?php
-                    }
-                ?>
             </p>
             <?php
             if(empty($data) && isset($_SESSION['user_id']) == false){

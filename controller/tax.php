@@ -243,9 +243,6 @@ class taxController{
 //        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
         $writer = new Xlsx($spreadsheet);
         $writer->save('php://output');
-
-
-        
         return ["views/tax/list.php", []];
     }
 }
