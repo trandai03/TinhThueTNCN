@@ -197,14 +197,20 @@ class taxController
         }
     }
 
+    function pay($thang, $user_id){
+        $tax['thang'] = $thang;
+        $tax['user_id'] = $user_id;
+        return $tax;
+    }
+
     function payment_action()
     {
         if (isset($_POST['bank']) && isset($_POST['stk']) && $_POST['stk'] != "") {
             $thang = $_POST['thang'];
             $user_id = $_SESSION['user_id'];
 
-            $tax['thang'] = $thang;
-            $tax['user_id'] = $user_id;
+
+            $tax = $this->pay($thang, $user_id);
             $taxModel = new tax();
             $table = $taxModel->table;
             // echo $user_id;
@@ -387,6 +393,23 @@ class taxController
         return ["views/tax/khaibao_tax.php", []];
     }
 
+    // hàm khai báo thuế test 
+    function khaibao($tax_code, $dc, $ns, $cccd, $id){
+        $userModel = new User();
+        $table = $userModel->table;
+
+        $sql = "UPDATE $table SET birth = '$ns', tax_code = '$tax_code', dia_chi = '$dc', cccd = '$cccd' WHERE id = $id";
+        $result = $userModel->query($sql);
+        if($result){
+            $user['check'] = $result; 
+            return $user;
+        }
+        else{
+            echo "Khai báo không thành công";
+            return null;
+        }
+    }
+
     function kbTax_action()
     {
         if (isset($_POST['khaibao'])) {
@@ -396,16 +419,18 @@ class taxController
             $cccd = $_POST['cccd'];
             $id = $_SESSION['user_id'];
 
-            $userModel = new User();
-            $table = $userModel->table;
+            // $userModel = new User();
+            // $table = $userModel->table;
 
-            $sql = "UPDATE $table SET birth = '$ns', tax_code = '$tax_code', dia_chi = '$dc', cccd = '$cccd' WHERE id = $id";
+            // $sql = "UPDATE $table SET birth = '$ns', tax_code = '$tax_code', dia_chi = '$dc', cccd = '$cccd' WHERE id = $id";
 
-            if ($userModel->query($sql)) {
-                // echo "OK";
-            } else {
-                echo "KO";
-            }
+            // if ($userModel->query($sql)) {
+            //     // echo "OK";
+            // } else {
+            //     echo "KO";
+            // }
+            $result = $this->khaibao($tax_code, $dc, $ns, $cccd, $id);
+            // print_r($result);
 
             $taxModel = new tax();
             $table = $taxModel->table;
