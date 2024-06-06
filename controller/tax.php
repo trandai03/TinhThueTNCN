@@ -219,6 +219,23 @@ class taxController
     }
 
 
+    function check_signup($username, $fullname, $password, $phone, $email){
+        $userModel = new User();
+        $table = $userModel->table;
+        $sql = "SELECT * FROM $table WHERE username = '$username'";
+        $result = $userModel->query($sql);
+
+        if ($result->num_rows > 0) {
+            echo "Username already exists!";
+            return null;
+        } else {
+            $sql = "SELECT MAX(id) as max_id FROM $table";
+            $result = $userModel->query($sql);
+            $row = $result->fetch_assoc();
+            return $row;
+        }
+    }
+
     function signup_action()
     {
         if (isset($_POST['register'])) {
@@ -233,21 +250,36 @@ class taxController
             // Check if username already exists
             $userModel = new User();
             $table = $userModel->table;
-            $sql = "SELECT * FROM $table WHERE username = '$username'";
-            $result = $userModel->query($sql);
+            // $sql = "SELECT * FROM $table WHERE username = '$username'";
+            // $result = $userModel->query($sql);
 
-            if ($result->num_rows > 0) {
-                echo "Username already exists!";
-            } else {
-                // $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-                $sql = "SELECT MAX(id) as max_id FROM $table";
-                // $sql = "SELECT COUNT(*) AS so_luong_ban_ghi FROM $table";
-                $result = $userModel->query($sql);
-                $row = $result->fetch_assoc();
+            // if ($result->num_rows > 0) {
+            //     echo "Username already exists!";
+            // } else {
+            //     // $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+            //     $sql = "SELECT MAX(id) as max_id FROM $table";
+            //     // $sql = "SELECT COUNT(*) AS so_luong_ban_ghi FROM $table";
+            //     $result = $userModel->query($sql);
+            //     $row = $result->fetch_assoc();
+            //     $count = (int) $row['max_id'];
+            //     $id = $count + 1;
+            //     $sql = "INSERT INTO $table (id, username, fullname, password, phone, email) VALUES ('$id', '$username', '$fullname', '$password', '$phone', '$email')";
+
+            //     if ($userModel->query($sql) === TRUE) {
+            //         // echo "Registration successful!";
+            //         return ["views/tax/login.php", []];
+            //     } else {
+            //         echo "Đăng kí thất bại";
+            //     }
+            // }
+
+
+            if($this->check_signup($username, $fullname, $password, $phone, $email) != null){
+                $row = $this->check_signup($username, $fullname, $password, $phone, $email);
                 $count = (int) $row['max_id'];
                 $id = $count + 1;
-                $sql = "INSERT INTO $table (id, username, fullname, password, phone, email) VALUES ('$id', '$username', '$fullname', '$password', '$phone', '$email')";
 
+                $sql = "INSERT INTO $table (id, username, fullname, password, phone, email) VALUES ('$id', '$username', '$fullname', '$password', '$phone', '$email')";
                 if ($userModel->query($sql) === TRUE) {
                     // echo "Registration successful!";
                     return ["views/tax/login.php", []];
