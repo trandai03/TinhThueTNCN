@@ -1,7 +1,7 @@
 <?php
 require __DIR__ . '/../vendor/autoload.php';
-require __DIR__ . '/../model/User.php';
 
+require_once (dirname(__DIR__) . '/model/User.php');
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
@@ -207,7 +207,7 @@ class taxController
             $taxModel = new tax();
             $table = $taxModel->table;
 
-            if($this->check_signin($username, $password) != null){
+            if ($this->check_signin($username, $password) != null) {
                 $id = $this->check_signin($username, $password)['id'];
                 $_SESSION['user_id'] = $id;
                 $sql = "SELECT * FROM $table WHERE user_id = $id order by thang";

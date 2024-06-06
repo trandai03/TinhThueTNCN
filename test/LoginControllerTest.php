@@ -31,7 +31,7 @@ class LoginControllerTest extends TestCase
 
         // Call the signin_action method
         $result = $loginController->check_signin($username, $password);
-        print_r($result);
+
         // Assert the expected behavior
         $this->assertArrayHasKey('id', $result);
         //$this->assertArrayHasKey('data', $result);
@@ -64,7 +64,8 @@ class LoginControllerTest extends TestCase
 
         // Call the signin_action method
         $result = $loginController->check_signin($username, $password);
-        print ("Result " . $result . "11111");
+
+        
         // Assert the expected behavior
         $this->assertNull($_SESSION['username']);
         $this->assertNull($_SESSION['user_id']);
