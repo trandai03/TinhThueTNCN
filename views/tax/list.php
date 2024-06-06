@@ -51,7 +51,7 @@
                     echo "<td>{$tax['thue']}</td>";
 
                     if($tax['status']=="NO"){
-                        echo "<td>Chưa đóng</td>";
+                        echo "<td><a class='button' href='$base_url/index.php/tax/payment{$tax["thang"]}'>Đóng tiền</a></td>";
                     }else{
                         echo "<td>Đã đóng</td>";
                     }
