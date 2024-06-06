@@ -15,10 +15,12 @@
         $user = $userModel->getUserById($id);
         // print_r($user);
         ?>
-        <p>Họ và tên : <?php echo $user['fullname'] ?> </p> <br>
-        <p>Căn cước công dân : <?php echo $user['cccd'] ?> </p> <br>
-        <p>Số điện thoại : <?php echo $user['phone'] ?> </p> <br>
-        <p>Email: <?php echo $user['email'] ?> </p> <br>
+        <p>Họ và tên : <?php echo $user['fullname'] ?> </p> 
+        <p>Căn cước công dân : <?php echo $user['cccd'] ?> </p> 
+        <p>Số điện thoại : <?php echo $user['phone'] ?> </p> 
+        <p>Email: <?php echo $user['email'] ?> </p> 
+        <p>Mã số thuế: <?php echo $user['tax_code']?></p>
+        <p>Địa chỉ : <?php echo $user['dia_chi']?></p>
 
     </div>
 

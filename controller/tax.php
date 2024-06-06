@@ -224,10 +224,11 @@ class taxController{
                 echo "Username already exists!";
             } else {
                 // $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-                $sql = "SELECT COUNT(*) AS so_luong_ban_ghi FROM $table";
+                $sql = "SELECT MAX(id) as max_id FROM $table";
+                // $sql = "SELECT COUNT(*) AS so_luong_ban_ghi FROM $table";
                 $result = $userModel->query($sql);
                 $row = $result->fetch_assoc();
-                $count = (int)$row['so_luong_ban_ghi'];
+                $count = (int)$row['max_id'];
                 $id = $count + 1;
                 $sql = "INSERT INTO $table (id, username, fullname, password, phone, email) VALUES ('$id', '$username', '$fullname', '$password', '$phone', '$email')";
                 
