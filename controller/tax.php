@@ -225,10 +225,11 @@ class taxController{
                 echo "Username already exists!";
             } else {
                 // $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-                $sql = "SELECT COUNT(*) AS so_luong_ban_ghi FROM $table";
+                $sql = "SELECT MAX(id) as max_id FROM $table";
+                // $sql = "SELECT COUNT(*) AS so_luong_ban_ghi FROM $table";
                 $result = $userModel->query($sql);
                 $row = $result->fetch_assoc();
-                $count = (int)$row['so_luong_ban_ghi'];
+                $count = (int)$row['max_id'];
                 $id = $count + 1;
                 $sql = "INSERT INTO $table (id, username, fullname, password, phone, email) VALUES ('$id', '$username', '$fullname', '$password', '$phone', '$email')";
                 
@@ -243,12 +244,49 @@ class taxController{
         
     }
 
+    function khaibao_action(){
+        return ["views/tax/khaibao_tax.php", []];
+    }
+
+    function kbTax_action(){
+        if(isset($_POST['khaibao'])){
+            $tax_code = $_POST['ms_thue'];
+            $dc = $_POST['dia_chi'];
+            $ns = $_POST['ngay_sinh'];
+            $cccd = $_POST['cccd']; 
+            $id = $_SESSION['user_id'];
+
+            $userModel = new User();
+            $table = $userModel->table;
+            
+            $sql = "UPDATE $table SET birth = '$ns', tax_code = '$tax_code', dia_chi = '$dc', cccd = '$cccd' WHERE id = $id";
+            
+            if($userModel->query($sql)){
+                // echo "OK";
+            }
+            else{
+                echo "KO";
+            }
+            
+            $taxModel = new tax();
+            $table = $taxModel->table;
+            $sql = "SELECT * FROM $table WHERE user_id = $id order by thang";
+            $data = $taxModel->Query($sql);
+            return ["views/tax/list.php", $data];
+        }
+        else{
+            return ["views/tax/khaibao_tax.php", []];
+        }
+    }
+
     function logout_action(){
         $_SESSION = [];
         session_unset();
         session_destroy();
         return ["views/tax/login.php", []];
     }
+
+    
 
     function export_action()
     {

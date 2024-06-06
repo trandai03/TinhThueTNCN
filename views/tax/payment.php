@@ -16,10 +16,12 @@
     // print_r($user);
     ?>
     
-    <p>Họ và tên : <?php echo $user['fullname'] ?> </p> 
-    <p>Căn cước công dân : <?php echo $user['cccd'] ?> </p> 
-    <p>Số điện thoại : <?php echo $user['phone'] ?> </p> 
-    <p>Email: <?php echo $user['email'] ?> </p> 
+        <p>Họ và tên : <?php echo $user['fullname'] ?> </p> 
+        <p>Căn cước công dân : <?php echo $user['cccd'] ?> </p> 
+        <p>Số điện thoại : <?php echo $user['phone'] ?> </p> 
+        <p>Email: <?php echo $user['email'] ?> </p>
+        <p>Căn cước công dân: <?php echo $user['cccd']?></p>
+        <p>Địa chỉ : <?php echo $user['dia_chi']?></p> 
     <h3>Thông tin thanh toán</h3>
     <?php
     // print_r($data);
@@ -28,6 +30,7 @@
 
     <p>Tháng : <?php echo $thue['thang']?></p>
     <p>Thuế : <?php echo $thue['thue'] . " VND"?></p>
+    <p>Mã số thuế: <?php echo $user['tax_code']?></p>
 
     <form action="<?php echo $base_url."/index.php/tax/payment"?>" method="post">
         <input type="hidden" name="thang" value="<?php echo $thue['thang']?>">
