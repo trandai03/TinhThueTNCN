@@ -6,70 +6,70 @@ use PHPUnit\Framework\TestCase;
 class LoginControllerTest extends TestCase
 {
     public function testLoginWithValidCredentials()
-{
-    // Prepare the test data
-    $username = 'trandai';
-    $password = '123';
+    {
+        // Prepare the test data
+        $username = 'trandai';
+        $password = '1';
 
-    // Mock the User model
-    // $userModel = $this->getMockBuilder('User')
-    //     ->setMethods(array('query'))
-    //     ->getMock();
-    // $userModel->expects($this->once())
-    //     ->method('query')
-    //     ->with($this->stringContains("SELECT * FROM users WHERE username = '$username'"))
-    //     ->will($this->returnValue(
-    //         $this->getMockResult(array(
-    //             'id' => 1,
-    //             'username' => $username,
-    //             'password' => $password
-    //         ))
-    //     ));
+        // Mock the User model
+        // $userModel = $this->getMockBuilder('User')
+        //     ->setMethods(array('query'))
+        //     ->getMock();
+        // $userModel->expects($this->once())
+        //     ->method('query')
+        //     ->with($this->stringContains("SELECT * FROM users WHERE username = '$username'"))
+        //     ->will($this->returnValue(
+        //         $this->getMockResult(array(
+        //             'id' => 1,
+        //             'username' => $username,
+        //             'password' => $password
+        //         ))
+        //     ));
 
-    // Create an instance of the LoginController
-    $loginController = new taxController;
+        // Create an instance of the LoginController
+        $loginController = new taxController;
 
-    // Call the signin_action method
-    $result =$loginController ->signin_action($username, $password);
-    print("Result: " . $result ."1111111");
-    // Assert the expected behavior
-    $this->assertArrayHasKey('views/tax/list.php', $result);
-    //$this->assertArrayHasKey('data', $result);
-    
-}
+        // Call the signin_action method
+        $result = $loginController->check_signin($username, $password);
+        print_r($result);
+        // Assert the expected behavior
+        $this->assertArrayHasKey('id', $result);
+        //$this->assertArrayHasKey('data', $result);
 
-public function testLoginWithInvalidCredentials()
-{
-    // Prepare the test data
-    $username = 'testuser';
-    $password = 'wrongpassword';
+    }
 
-    // Mock the User model
-    // $userModel = $this->getMockBuilder('User')
-    //     ->setMethods(array('query'))
-    //     ->getMock();
-    // $userModel->expects($this->once())
-    //     ->method('query')
-    //     ->with($this->stringContains("SELECT * FROM users WHERE username = '$username'"))
-    //     ->will($this->returnValue(
-    //         $this->getMockResult(array(
-    //             'id' => 1,
-    //             'username' => $username,
-    //             'password' => 'correctpassword'
-    //         ))
-    //     ));
+    public function testLoginWithInvalidCredentials()
+    {
+        // Prepare the test data
+        $username = 'testuser';
+        $password = 'wrongpassword';
 
-    // Create an instance of the LoginController
-    $loginController = new taxController;
+        // Mock the User model
+        // $userModel = $this->getMockBuilder('User')
+        //     ->setMethods(array('query'))
+        //     ->getMock();
+        // $userModel->expects($this->once())
+        //     ->method('query')
+        //     ->with($this->stringContains("SELECT * FROM users WHERE username = '$username'"))
+        //     ->will($this->returnValue(
+        //         $this->getMockResult(array(
+        //             'id' => 1,
+        //             'username' => $username,
+        //             'password' => 'correctpassword'
+        //         ))
+        //     ));
 
-    // Call the signin_action method
-    $result =$loginController ->signin_action($username, $password);
-    print("Result " .$result ."11111");
-    // Assert the expected behavior
-    $this->assertNull($_SESSION['username']);
-    $this->assertNull($_SESSION['user_id']);
-    $this->assertArrayNotHasKey('views/tax/list.php', $result);
-}
+        // Create an instance of the LoginController
+        $loginController = new taxController;
+
+        // Call the signin_action method
+        $result = $loginController->check_signin($username, $password);
+        print ("Result " . $result . "11111");
+        // Assert the expected behavior
+        $this->assertNull($_SESSION['username']);
+        $this->assertNull($_SESSION['user_id']);
+        $this->assertArrayNotHasKey('views/tax/list.php', $result);
+    }
 
 
     private function getMockResult($data)
