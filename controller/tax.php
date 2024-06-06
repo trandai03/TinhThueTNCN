@@ -207,8 +207,8 @@ class taxController
             $taxModel = new tax();
             $table = $taxModel->table;
 
-            if ($this->check_signin($username, $password) != null) {
-                $id = $this->check_signin($username, $password);
+            if($this->check_signin($username, $password) != null){
+                $id = $this->check_signin($username, $password)['id'];
                 $_SESSION['user_id'] = $id;
                 $sql = "SELECT * FROM $table WHERE user_id = $id order by thang";
                 $data = $taxModel->query($sql);
