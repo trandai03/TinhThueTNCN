@@ -11,21 +11,7 @@ class LoginTest extends TestCase
         $username = 'trandai';
         $password = '1';
 
-        // Mock the User model
-        // $userModel = $this->getMockBuilder('User')
-        //     ->setMethods(array('query'))
-        //     ->getMock();
-        // $userModel->expects($this->once())
-        //     ->method('query')
-        //     ->with($this->stringContains("SELECT * FROM users WHERE username = '$username'"))
-        //     ->will($this->returnValue(
-        //         $this->getMockResult(array(
-        //             'id' => 1,
-        //             'username' => $username,
-        //             'password' => $password
-        //         ))
-        //     ));
-
+     
         // Create an instance of the LoginController
         $loginController = new taxController;
 
@@ -44,20 +30,7 @@ class LoginTest extends TestCase
         $username = 'testuser';
         $password = 'wrongpassword';
 
-        // Mock the User model
-        // $userModel = $this->getMockBuilder('User')
-        //     ->setMethods(array('query'))
-        //     ->getMock();
-        // $userModel->expects($this->once())
-        //     ->method('query')
-        //     ->with($this->stringContains("SELECT * FROM users WHERE username = '$username'"))
-        //     ->will($this->returnValue(
-        //         $this->getMockResult(array(
-        //             'id' => 1,
-        //             'username' => $username,
-        //             'password' => 'correctpassword'
-        //         ))
-        //     ));
+        
 
         // Create an instance of the LoginController
         $loginController = new taxController;

@@ -53,9 +53,22 @@ class taxController
     {
         return ["views/tax/calc_tax.php", []];
     }
-    
+
     // hàm test tính thuế 
-    function calc($thu_nhap, $so_nguoi, $thang, $user_id){
+    function calc($thu_nhap, $so_nguoi, $thang, $user_id)
+    {
+        if ($thu_nhap < 0) {
+            echo "thu_nhap < 0 !";
+            return "thu_nhap < 0 !";
+        }
+        if ($so_nguoi < 0) {
+            echo "so_nguoi < 0 !";
+            return "so_nguoi < 0 !";
+        }
+        if ($thang < 0) {
+            echo "thang < 0 !";
+            return "thang < 0 !";
+        }
         $giam_ca_nhan = 11000000;
         $giam_nguoi_phu_thuoc = 4400000;
 

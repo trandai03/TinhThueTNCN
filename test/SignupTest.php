@@ -20,10 +20,6 @@ class SignupTest extends TestCase
 
         // Gọi phương thức kiểm thử
         $result = $signupController->check_signup($username, $fullname, $password, $phone, $email);
-
-        // Kiểm tra kết quả
-
-        //$this->assertTrue($result);
         if (is_array($result)) {
             // $data is an array
             // Perform actions for array data
