@@ -174,7 +174,7 @@ class taxController{
         if (isset($_POST['login'])) {
             $username = $_POST['login_username'];
             $password = $_POST['login_password'];
-
+    
             $userModel = new User();
             $table = $userModel->table;
         
@@ -196,13 +196,14 @@ class taxController{
                     // print_r($data);
                     return ["views/tax/list.php", $data];
                 } else {
-                    echo "Invalid password.";
+                    throw new Exception("Invalid password.");
                 }
             } else {
-                echo "No user found with this username.";
+                throw new Exception("No user found with this username.");
             }
         }
     }
+    
 
     function signup_action(){
         if (isset($_POST['register'])) {
