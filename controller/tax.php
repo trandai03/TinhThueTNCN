@@ -219,7 +219,42 @@ class taxController
     }
 
 
-    function check_signup($username, $fullname, $password, $phone, $email){
+    function check_signup($username, $fullname, $password, $phone, $email)
+    {
+        // Regular expressions for validation
+        $username_regex = '/^[a-zA-Z0-9_]{3,20}$/';
+        $fullname_regex = '/^[a-zA-Z\s]+$/';
+        $password_regex = '/(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/';
+        $phone_regex = '/^\d{10}$/'; // Assumes phone number is 10 digits
+        $email_regex = '/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/';
+
+        // Validate input parameters
+        if (!preg_match($username_regex, $username)) {
+            echo "Invalid username format!";
+            return null;
+        }
+
+        if (!preg_match($fullname_regex, $fullname)) {
+            echo "Invalid fullname format!";
+            return null;
+        }
+
+        if (!preg_match($password_regex, $password)) {
+            echo "Invalid password format!";
+            return null;
+        }
+
+        if (!preg_match($phone_regex, $phone)) {
+            echo "Invalid phone number format!";
+            return null;
+        }
+
+        if (!preg_match($email_regex, $email)) {
+            echo "Invalid email format!";
+            return null;
+        }
+
+        // Continue with the rest of the function if all inputs are valid
         $userModel = new User();
         $table = $userModel->table;
         $sql = "SELECT * FROM $table WHERE username = '$username'";
@@ -274,7 +309,7 @@ class taxController
             // }
 
 
-            if($this->check_signup($username, $fullname, $password, $phone, $email) != null){
+            if ($this->check_signup($username, $fullname, $password, $phone, $email) != null) {
                 $row = $this->check_signup($username, $fullname, $password, $phone, $email);
                 $count = (int) $row['max_id'];
                 $id = $count + 1;
