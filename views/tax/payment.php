@@ -1,4 +1,4 @@
-<<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -8,39 +8,41 @@
 </head>
 <body>
 <div class="container">
-    <h3>Đóng thuế</h3>
-    <h3>Thông tin khách hàng</h3>
+    <h4>Thông tin khách hàng</h4>
     <?php
-    $id = $_SESSION['user_id'];
-    $userModel = new User();
-    $user = $userModel->getUserById($id);
-    print_r($user);
+        $id = $_SESSION['user_id'];
+        $userModel = new User();
+        $user = $userModel->getUserById($id);
+    // print_r($user);
     ?>
-    ?>
-    <p>Họ và tên : <?php echo $user['fullname'] ?> </p> <br>
-    <p>Căn cước công dân : <?php echo $user['cccd'] ?> </p> <br>
-    <p>Số điện thoại : <?php echo $user['phone'] ?> </p> <br>
-    <p>Email: <?php echo $user['email'] ?> </p> <br>
+    
+    <p>Họ và tên : <?php echo $user['fullname'] ?> </p> 
+    <p>Căn cước công dân : <?php echo $user['cccd'] ?> </p> 
+    <p>Số điện thoại : <?php echo $user['phone'] ?> </p> 
+    <p>Email: <?php echo $user['email'] ?> </p> 
     <h3>Thông tin thanh toán</h3>
     <?php
-    print_r($data);
-    $thue = $data;
-    echo "<p>Tháng : . $thue->thang . </p>";
-    echo "<p>Thuế phải trả : . $thue->thue . </p>";
-
+    // print_r($data);
+    foreach($data as $thue)
     ?>
-    <label for="cars">Chọn ngân hàng:</label>
-    <select name="bank" id="bank">
-        <option value="BIDV">BIDV</option>
-        <option value="VietcomBank">VietcomBank</option>
-        <option value="MBBank">MBBank</option>
-        <option value="VietinBank">VietinBank</option>
-    </select>
-    <input name="stk" placeholder="Số tài khoản" value=""><br>
-    <input type="submit" value="Thực hiện thanh toán ">
+
+    <p>Tháng : <?php echo $thue['thang']?></p>
+    <p>Thuế : <?php echo $thue['thue'] . " VND"?></p>
+
+    <form action="<?php echo $base_url."/index.php/tax/payment"?>" method="post">
+        <input type="hidden" name="thang" value="<?php echo $thue['thang']?>">
+        <label for="banks">Chọn ngân hàng:</label>
+        <select name="bank" id="bank">
+            <option value="BIDV">BIDV</option>
+            <option value="VietcomBank">VietcomBank</option>
+            <option value="MBBank">MBBank</option>
+            <option value="VietinBank">VietinBank</option>
+        </select>
+        <input name="stk" placeholder="Số tài khoản" value=""><br>
+        <input type="submit" value="Thanh toán">
+    </form>
 </div>
-
-
 </body>
 </html>
->
+
+

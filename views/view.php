@@ -21,7 +21,7 @@
 			<?php 
 				if(isset($_SESSION['user_id'])){
 			?>
-			<li><a href="<?php echo $base_url."/index.php/tax"?>">Home</a></li>
+			<li><a href="<?php echo $base_url."/index.php/tax"?>">Trang chủ</a></li>
 			<?php
 				}
 			?>
@@ -39,8 +39,6 @@
 				}
 			?>
 		</ul>
-		<?php 
-		?>
 		<main>
 			<?php include($view); ?>
 		</main>

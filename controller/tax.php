@@ -111,14 +111,59 @@ class taxController{
             $sql = "SELECT * FROM $table WHERE user_id = $user_id and thang = $thang";
             $data = $taxModel->exeQuery($sql);
             
-            // $data = $taxModel->getTaxByUserID($user_id);
+            
             return ["views/tax/pay_tax.php",$data];
         }        
     }
 
     
-    function payTax_action(){
-        
+    function payTax_action($thang){
+        if(isset($thang) && $thang!= "" && (int)$thang){
+            $user_id = $_SESSION['user_id'];
+            $thang = (int)$thang;
+            $taxModel = new tax();
+            $table = $taxModel->table;
+            $sql = "SELECT * FROM $table WHERE thang = $thang and user_id = $user_id";
+            $data = $taxModel->exeQuery($sql);
+        }
+        if(!empty($data)){
+            // print_r($data);
+            return ["views/tax/payment.php",$data];
+        }else{
+            return ["views/tax/list.php", []];
+        }
+    }
+
+    function payment_action(){
+        if(isset($_POST['bank']) && isset($_POST['stk']) && $_POST['stk'] != ""){
+            $thang = $_POST['thang'];
+            $user_id = $_SESSION['user_id'];
+
+            $tax['thang'] = $thang;
+            $tax['user_id'] = $user_id;
+            $taxModel = new tax();
+            $table = $taxModel->table;
+            // echo $user_id;
+            $sql = "UPDATE $table SET status = 'YES' WHERE user_id = $user_id AND thang = $thang";
+            if($taxModel->query($sql)){
+                // echo "OK";
+            }
+            else{
+                echo "KO";
+            }
+            $sql = "SELECT * FROM $table WHERE user_id = $user_id order by thang";
+            $data = $taxModel->Query($sql);
+
+            return ["views/tax/list.php", $data];
+        }
+        else{
+            $user_id = $_SESSION['user_id'];
+            $taxModel = new tax();
+            $table = $taxModel->table;
+            $sql = "SELECT * FROM $table WHERE user_id = $user_id";
+            $data = $taxModel->query($sql);
+            return ["views/tax/list.php", $data];
+        }
     }
 
     function login_action(){

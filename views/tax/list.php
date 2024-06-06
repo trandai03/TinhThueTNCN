@@ -51,7 +51,7 @@
                     echo "<td>{$tax['thue']}</td>";
 
                     if($tax['status']=="NO"){
-                        echo "<td><a class='button' href='$base_url/index.php/tax/payment{$tax["thang"]}'>Đóng tiền</a></td>";
+                        echo "<td><a class='button' onclick='dongTien({$tax["thang"]})'>Đóng tiền</a></td>";
                     }else{
                         echo "<td>Đã đóng</td>";
                     }
@@ -60,15 +60,14 @@
                 ?>
                 </tbody>
             </table>
-            <!-- <script>
-    function deleteProduct(id){
-        if(confirm("Bạn có chắc chắn muốn xóa sản phẩm này không?")){
-            window.location= "<?php
-            // echo $base_url
-            ?>/index.php/product/delete/" + id;
-        }
-    }
-    </script> -->
         </main>
+
+        <script>
+	 	function dongTien(thang){
+	 		if(confirm("Bạn có chắc chắn muốn đóng tiền thuế tháng này không?")){
+	 			window.location= "<?php echo $base_url?>/index.php/tax/payTax/" + thang;
+	 		}
+	 	}
+	 </script>
     </body>
     </html>

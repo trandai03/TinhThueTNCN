@@ -206,10 +206,6 @@
                             <input id="reg_phone" name="reg_phone" type="text" class="input">
                         </div>
                         <div class="group">
-                            <label for="reg_address" class="label">Địa chỉ</label>
-                            <input id="reg_address" name="reg_address" type="text" class="input">
-                        </div>
-                        <div class="group">
                             <label for="reg_email" class="label">Email</label>
                             <input id="reg_email" name="reg_email" type="text" class="input">
                         </div>
