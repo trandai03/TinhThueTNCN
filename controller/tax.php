@@ -53,6 +53,50 @@ class taxController
     {
         return ["views/tax/calc_tax.php", []];
     }
+    
+    // hàm test tính thuế 
+    function calc($thu_nhap, $so_nguoi, $thang, $user_id){
+        $giam_ca_nhan = 11000000;
+        $giam_nguoi_phu_thuoc = 4400000;
+
+        $thu_nhap_thue = $thu_nhap - $giam_ca_nhan - $so_nguoi * $giam_nguoi_phu_thuoc;
+        $thue = 0;
+        if ($thu_nhap_thue <= 0) {
+            $thue = 0;
+        } else {
+            if ($thu_nhap_thue <= 5 * 1000000) {
+                $thue = $thu_nhap_thue * 5 / 100;
+            } else if ($thu_nhap_thue <= 10 * 1000000) {
+                $thue = $thu_nhap_thue * 10 / 100 - 0.25 * 1000000;
+            } else if ($thu_nhap_thue <= 18 * 1000000) {
+                $thue = $thu_nhap_thue * 15 / 100 - 0.75 * 1000000;
+            } else if ($thu_nhap_thue <= 32 * 1000000) {
+                $thue = $thu_nhap_thue * 20 / 100 - 1.65 * 1000000;
+            } else if ($thu_nhap_thue <= 52 * 1000000) {
+                $thue = $thu_nhap_thue * 25 / 100 - 3.25 * 1000000;
+            } else if ($thu_nhap_thue <= 80 * 1000000) {
+                $thue = $thu_nhap_thue * 30 / 100 - 5.85 * 1000000;
+            } else {
+                $thue = $thu_nhap_thue * 35 / 100 - 9.85 * 1000000;
+            }
+        }
+        $tax['tongThuNhap'] = $thu_nhap;
+        $tax['soNguoiPhuThuoc'] = $so_nguoi;
+        $tax['thang'] = $thang;
+        $tax['thue'] = $thue;
+        $tax['status'] = "NO";
+        $tax['user_id'] = $user_id;
+        $taxModel = new tax();
+        $table = $taxModel->table;
+        // $sql = "SELECT COUNT(*) AS so_luong_ban_ghi FROM $table";
+        $sql = "SELECT MAX(id) as max_id FROM $table";
+        $result = $taxModel->query($sql);
+        $row = $result->fetch_assoc();
+        $count = (int) $row['max_id'];
+        $id = $count + 1;
+        $tax['id'] = $id;
+        return $tax;
+    }
 
     function calcTax_action()
     {
@@ -61,50 +105,49 @@ class taxController
             $so_nguoi = $_POST['so_nguoi'];
             $thang = $_POST['thang'];
 
-            $giam_ca_nhan = 11000000;
-            $giam_nguoi_phu_thuoc = 4400000;
+            // $giam_ca_nhan = 11000000;
+            // $giam_nguoi_phu_thuoc = 4400000;
 
-            $thu_nhap_thue = $thu_nhap - $giam_ca_nhan - $so_nguoi * $giam_nguoi_phu_thuoc;
-            $thue = 0;
-            if ($thu_nhap_thue <= 0) {
-                $thue = 0;
-            } else {
-                if ($thu_nhap_thue <= 5 * 1000000) {
-                    $thue = $thu_nhap_thue * 5 / 100;
-                } else if ($thu_nhap_thue <= 10 * 1000000) {
-                    $thue = $thu_nhap_thue * 10 / 100 - 0.25 * 1000000;
-                } else if ($thu_nhap_thue <= 18 * 1000000) {
-                    $thue = $thu_nhap_thue * 15 / 100 - 0.75 * 1000000;
-                } else if ($thu_nhap_thue <= 32 * 1000000) {
-                    $thue = $thu_nhap_thue * 20 / 100 - 1.65 * 1000000;
-                } else if ($thu_nhap_thue <= 52 * 1000000) {
-                    $thue = $thu_nhap_thue * 25 / 100 - 3.25 * 1000000;
-                } else if ($thu_nhap_thue <= 80 * 1000000) {
-                    $thue = $thu_nhap_thue * 30 / 100 - 5.85 * 1000000;
-                } else {
-                    $thue = $thu_nhap_thue * 35 / 100 - 9.85 * 1000000;
-                }
-            }
+            // $thu_nhap_thue = $thu_nhap - $giam_ca_nhan - $so_nguoi * $giam_nguoi_phu_thuoc;
+            // $thue = 0;
+            // if ($thu_nhap_thue <= 0) {
+            //     $thue = 0;
+            // } else {
+            //     if ($thu_nhap_thue <= 5 * 1000000) {
+            //         $thue = $thu_nhap_thue * 5 / 100;
+            //     } else if ($thu_nhap_thue <= 10 * 1000000) {
+            //         $thue = $thu_nhap_thue * 10 / 100 - 0.25 * 1000000;
+            //     } else if ($thu_nhap_thue <= 18 * 1000000) {
+            //         $thue = $thu_nhap_thue * 15 / 100 - 0.75 * 1000000;
+            //     } else if ($thu_nhap_thue <= 32 * 1000000) {
+            //         $thue = $thu_nhap_thue * 20 / 100 - 1.65 * 1000000;
+            //     } else if ($thu_nhap_thue <= 52 * 1000000) {
+            //         $thue = $thu_nhap_thue * 25 / 100 - 3.25 * 1000000;
+            //     } else if ($thu_nhap_thue <= 80 * 1000000) {
+            //         $thue = $thu_nhap_thue * 30 / 100 - 5.85 * 1000000;
+            //     } else {
+            //         $thue = $thu_nhap_thue * 35 / 100 - 9.85 * 1000000;
+            //     }
+            // }
             if (!isset($_SESSION['user_id'])) {
                 return ["views/tax/login.php", []];
             }
             $user_id = $_SESSION['user_id'];
-            $tax['tongThuNhap'] = $thu_nhap;
-            $tax['soNguoiPhuThuoc'] = $so_nguoi;
-            $tax['thang'] = $thang;
-            $tax['thue'] = $thue;
-            $tax['status'] = "NO";
-            $tax['user_id'] = $user_id;
-            $status = "NO";
+            // $tax['tongThuNhap'] = $thu_nhap;
+            // $tax['soNguoiPhuThuoc'] = $so_nguoi;
+            // $tax['thang'] = $thang;
+            // $tax['thue'] = $thue;
+            // $tax['status'] = "NO";
+            // $tax['user_id'] = $user_id;
+            // $status = "NO";
 
             $taxModel = new tax();
             $table = $taxModel->table;
-            $sql = "SELECT COUNT(*) AS so_luong_ban_ghi FROM $table";
-            $result = $taxModel->query($sql);
-            $row = $result->fetch_assoc();
-            $count = (int) $row['so_luong_ban_ghi'];
-            $id = $count + 1;
-            $tax['id'] = $id;
+            // // $sql = "SELECT COUNT(*) AS so_luong_ban_ghi FROM $table";
+            // $sql = "SELECT MAX(id) as max_id FROM $table";
+            // $result = $taxModel->query($sql);
+            // $row = $result->fetch_assoc();
+            $tax = $this->calc($thu_nhap, $so_nguoi, $thang, $user_id);
 
 
             if ($taxModel->addTax($tax)) {
