@@ -197,7 +197,8 @@ class taxController
         }
     }
 
-    function pay($thang, $user_id){
+    function pay($thang, $user_id)
+    {
         $tax['thang'] = $thang;
         $tax['user_id'] = $user_id;
         return $tax;
@@ -394,17 +395,48 @@ class taxController
     }
 
     // hàm khai báo thuế test 
-    function khaibao($tax_code, $dc, $ns, $cccd, $id){
+    function khaibao($tax_code, $dc, $ns, $cccd, $id)
+    {
+        $dc_regex = '/^[a-zA-Z0-9\s\.,#\-]+$/';
+
+        $birth_regex = '/^(0[1-9]|[1-2][0-9]|3[0-1])-(0[1-9]|1[0-2])-\d{4}$/';
+        $tax_regex = '/^\d{10}$/'; // Assumes phone number is 10 digits
+        $cccd_regex = '/^\d{10}$/';
+        $id_regex = '/^\d+$/';
+        // Validate input parameters
+        if (!preg_match($dc_regex, $dc)) {
+            echo "Invalid address format!";
+            return "Invalid address format!";
+        }
+
+        if (!preg_match($birth_regex, $ns)) {
+            echo "Invalid birth of date format!";
+            return "Invalid birth of date format!";
+        }
+
+        if (!preg_match($tax_regex, $tax_code)) {
+            echo "Invalid tax code format!";
+            return "Invalid tax code format!";
+        }
+
+        if (!preg_match($cccd_regex, $cccd)) {
+            echo "Invalid phone CCCD format!";
+            return "Invalid phone CCCD format!";
+        }
+
+        if (!preg_match($id_regex, $id)) {
+            echo "Invalid id format!";
+            return "Invalid id format!";
+        }
         $userModel = new User();
         $table = $userModel->table;
 
         $sql = "UPDATE $table SET birth = '$ns', tax_code = '$tax_code', dia_chi = '$dc', cccd = '$cccd' WHERE id = $id";
         $result = $userModel->query($sql);
-        if($result){
-            $user['check'] = $result; 
+        if ($result) {
+            $user['check'] = $result;
             return $user;
-        }
-        else{
+        } else {
             echo "Khai báo không thành công";
             return null;
         }

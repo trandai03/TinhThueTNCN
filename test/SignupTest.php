@@ -7,22 +7,15 @@ class SignupTest extends TestCase
 {
     public function testSignupWithValidCredentials()
     {
-
-
         $username = 'testuser';
         $fullname = 'Test User';
         $password = 'StrongP@55';
         $phone = '0987654321';
         $email = 'test@example.com';
-        // Tạo mô phỏng cho model User
 
         $signupController = new taxController();
-
-        // Gọi phương thức kiểm thử
         $result = $signupController->check_signup($username, $fullname, $password, $phone, $email);
         if (is_array($result)) {
-            // $data is an array
-            // Perform actions for array data
             $this->assertArrayHasKey('max_id', $result);
         } else {
             $this->assertTrue($result);
@@ -37,20 +30,9 @@ class SignupTest extends TestCase
         $password = 'testpassword';
         $phone = '123456789';
         $email = 'test@example.com';
-        // Tạo mô phỏng cho model User
-
         $signupController = new taxController();
-
-        // Gọi phương thức kiểm thử
         $result = $signupController->check_signup($username, $fullname, $password, $phone, $email);
-
-        // Kiểm tra kết quả
-
-
-
         if (is_array($result)) {
-            // $data is an array
-            // Perform actions for array data
             $this->assertArrayHasKey('max_id', $result);
         } else {
             $this->assertTrue($result);

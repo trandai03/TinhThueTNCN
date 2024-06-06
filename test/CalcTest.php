@@ -14,19 +14,10 @@ class CalcTest extends TestCase
         $thang = 7;
         $user_id = 1;
 
-
         $controller = new taxController();
 
-        // Gọi phương thức kiểm thử
         $result = $controller->calc($thu_nhap, $so_nguoi, $thang, $user_id);
-
-
-        // Kiểm tra kết quả
-
-        //$this->assertTrue($result);
         if (is_array($result)) {
-            // $data is an array
-            // Perform actions for array data
             $this->assertArrayHasKey('id', $result);
         } else {
             $this->assertTrue($result);
@@ -40,20 +31,10 @@ class CalcTest extends TestCase
         $so_nguoi = 1;
         $thang = -7;
         $user_id = 1;
-        // Tạo mô phỏng cho model User
 
         $controller = new taxController();
-
-        // Gọi phương thức kiểm thử
         $result = $controller->calc($thu_nhap, $so_nguoi, $thang, $user_id);
-
-        // Kiểm tra kết quả
-
-
-
         if (is_array($result)) {
-            // $data is an array
-            // Perform actions for array data
             $this->assertArrayHasKey('id', $result);
         } else {
             $this->assertTrue($result);
