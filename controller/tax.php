@@ -186,7 +186,7 @@ class taxController
             $row = $result->fetch_assoc();
             // password_verify($password, $row['password'])
             if ($password == $row['password']) {
-                return $row['id'];
+                return $row;
             } else {
                 throw new Exception("Mật khẩu chưa đúng");
             }
@@ -205,7 +205,7 @@ class taxController
             $table = $taxModel->table;
 
             if($this->check_signin($username, $password) != null){
-                $id = $this->check_signin($username, $password);
+                $id = $this->check_signin($username, $password)['id'];
                 $_SESSION['user_id'] = $id;
                 $sql = "SELECT * FROM $table WHERE user_id = $id order by thang";
                 $data = $taxModel->query($sql);
