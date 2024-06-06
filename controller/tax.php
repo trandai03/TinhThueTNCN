@@ -1,5 +1,6 @@
 <?php
 require __DIR__ . '/../vendor/autoload.php';
+require __DIR__ . '/../model/User.php';
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -176,10 +177,11 @@ class taxController
         return ["views/tax/login.php", []];
     }
 
-    function check_signin($username, $password){
+    function check_signin($username, $password)
+    {
         $userModel = new User();
         $table = $userModel->table;
-    
+
         $sql = "SELECT * FROM $table WHERE username = '$username'";
         $result = $userModel->query($sql);
         if ($result->num_rows > 0) {
@@ -196,7 +198,8 @@ class taxController
         return null;
     }
 
-    function signin_action(){
+    function signin_action()
+    {
         if (isset($_POST['login'])) {
             $username = $_POST['login_username'];
             $password = $_POST['login_password'];
