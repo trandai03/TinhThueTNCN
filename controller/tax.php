@@ -170,36 +170,41 @@ class taxController{
         return ["views/tax/login.php",[]];
     }
 
+    function check_signin($username, $password){
+        $userModel = new User();
+        $table = $userModel->table;
+    
+        $sql = "SELECT * FROM $table WHERE username = '$username'";
+        $result = $userModel->query($sql);
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            // password_verify($password, $row['password'])
+            if ($password == $row['password']) {
+                return $row['id'];
+            } else {
+                throw new Exception("Mật khẩu chưa đúng");
+            }
+        } else {
+            throw new Exception("Không tồn tại user này");
+        }
+        return null;
+    }
+
     function signin_action(){
         if (isset($_POST['login'])) {
             $username = $_POST['login_username'];
             $password = $_POST['login_password'];
-    
-            $userModel = new User();
-            $table = $userModel->table;
-        
-            $sql = "SELECT * FROM $table WHERE username = '$username'";
-            $result = $userModel->query($sql);
+
             $taxModel = new tax();
             $table = $taxModel->table;
-            
-            if ($result->num_rows > 0) {
-                $row = $result->fetch_assoc();
-                $id = $row['id'];
-                // password_verify($password, $row['password'])
-                if ($password == $row['password']) {
-                    $_SESSION['username'] = $username;
-                    $_SESSION['user_id'] = $id;
-                    
-                    $sql = "SELECT * FROM $table WHERE user_id = $id order by thang";
-                    $data = $taxModel->Query($sql);
-                    // print_r($data);
-                    return ["views/tax/list.php", $data];
-                } else {
-                    throw new Exception("Invalid password.");
-                }
-            } else {
-                throw new Exception("No user found with this username.");
+
+            if($this->check_signin($username, $password) != null){
+                $id = $this->check_signin($username, $password);
+                $_SESSION['user_id'] = $id;
+                $sql = "SELECT * FROM $table WHERE user_id = $id order by thang";
+                $data = $taxModel->query($sql);
+                // print_r($data);
+                return ["views/tax/list.php", $data];
             }
         }
     }
