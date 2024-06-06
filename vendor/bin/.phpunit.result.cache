@@ -1,1 +1,1 @@
-{"version":1,"defects":{"LoginControllerTest::testLoginWithValidCredentials":4,"LoginControllerTest::testLoginWithInvalidCredentials":4},"times":{"LoginControllerTest::testLoginWithValidCredentials":0.008,"LoginControllerTest::testLoginWithInvalidCredentials":0}}
+{"version":1,"defects":{"LoginControllerTest::testLoginWithValidCredentials":4,"LoginControllerTest::testLoginWithInvalidCredentials":4},"times":{"LoginControllerTest::testLoginWithValidCredentials":0.004,"LoginControllerTest::testLoginWithInvalidCredentials":0}}
