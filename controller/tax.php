@@ -242,12 +242,49 @@ class taxController{
         
     }
 
+    function khaibao_action(){
+        return ["views/tax/khaibao_tax.php", []];
+    }
+
+    function kbTax_action(){
+        if(isset($_POST['khaibao'])){
+            $tax_code = $_POST['ms_thue'];
+            $dc = $_POST['dia_chi'];
+            $ns = $_POST['ngay_sinh'];
+            $cccd = $_POST['cccd']; 
+            $id = $_SESSION['user_id'];
+
+            $userModel = new User();
+            $table = $userModel->table;
+            
+            $sql = "UPDATE $table SET birth = '$ns', tax_code = '$tax_code', dia_chi = '$dc', cccd = '$cccd' WHERE id = $id";
+            
+            if($userModel->query($sql)){
+                // echo "OK";
+            }
+            else{
+                echo "KO";
+            }
+            
+            $taxModel = new tax();
+            $table = $taxModel->table;
+            $sql = "SELECT * FROM $table WHERE user_id = $id order by thang";
+            $data = $taxModel->Query($sql);
+            return ["views/tax/list.php", $data];
+        }
+        else{
+            return ["views/tax/khaibao_tax.php", []];
+        }
+    }
+
     function logout_action(){
         $_SESSION = [];
         session_unset();
         session_destroy();
         return ["views/tax/login.php", []];
     }
+
+    
 
     function export_action()
     {

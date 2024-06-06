@@ -59,7 +59,11 @@ class Database {
     }
 
     public function Query($sql){
-        return mysqli_query($this->conn, $sql);
+        $result = mysqli_query($this->conn, $sql);
+        if (!$result) {
+            echo "Lỗi khi thực hiện câu lệnh SQL: " . mysqli_error($this->conn);
+        }
+        return $result;
     }
 }
 ?>

@@ -22,22 +22,17 @@
 				if(isset($_SESSION['user_id'])){
 			?>
 			<li><a href="<?php echo $base_url."/index.php/tax"?>">Trang chủ</a></li>
+			<li><a  href="<?php echo $base_url ?>/index.php/tax/calc">Tính thuế</a></li>
+			<li><a href="<?php echo $base_url?>/index.php/tax/khaibao">Khai báo thuế </a></li>
+			<li><a href="<?php echo $base_url?>/index.php/tax/logout">Đăng xuất</a></li>
 			<?php
-				}
-			?>
-            <li><a  href="<?php echo $base_url ?>/index.php/tax/calc">Tính thuế</a></li>
-			<?php 
-				if(!isset($_SESSION['user_id'])){
+				} else{
 			?>
 			<li><a href="<?php echo $base_url?>/index.php/tax/login">Đăng nhập</a></li>
 			<?php
 				}
-				else{
 			?>
-			<li><a href="<?php echo $base_url?>/index.php/tax/logout">Đăng xuất</a></li>
-			<?php		
-				}
-			?>
+			
 		</ul>
 		<main>
 			<?php include($view); ?>
