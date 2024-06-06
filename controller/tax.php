@@ -3,54 +3,59 @@ require __DIR__ . '/../vendor/autoload.php';
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-class taxController{
+
+class taxController
+{
     protected $message = "";
     protected $title = "Quản lý thuế";
 
-    function view_action($id=0){
-        if(isset($id) && $id!= "" && (int)$id){
-            $id = (int)$id;
+    function view_action($id = 0)
+    {
+        if (isset($id) && $id != "" && (int) $id) {
+            $id = (int) $id;
             $taxModel = new tax();
             $data = $taxModel->getTaxById($id);
         }
-        if(!empty($data)){
-            return ["views/tax/view.php",$data];
-        }else{
+        if (!empty($data)) {
+            return ["views/tax/view.php", $data];
+        } else {
             $taxModel = new tax();
             $data = $taxModel->getAllthue();
-            
-            $message ="Thuế của người bạn muốn xem không tồn tại";
+
+            $message = "Thuế của người bạn muốn xem không tồn tại";
             $data['message'] = $message;
             return ["views/tax/list.php", $data];
         }
-    } 
+    }
 
-    function index_action(){
-        if(isset($_SESSION['user_id'])){
+    function index_action()
+    {
+        if (isset($_SESSION['user_id'])) {
             $id = $_SESSION['user_id'];
-            if(isset($_GET['q']) && $_GET['q']!=''){
+            if (isset($_GET['q']) && $_GET['q'] != '') {
                 $q = $_GET['q'];
                 $taxModel = new tax();
                 $data = $taxModel->searchthue($q);
-            }else{
+            } else {
                 $taxModel = new tax();
                 $table = $taxModel->table;
                 $sql = "SELECT * FROM $table WHERE user_id = $id order by thang";
                 $data = $taxModel->Query($sql);
-            }		
+            }
             return ["views/tax/list.php", $data];
-        }
-        else{
+        } else {
             return ["views/tax/login.php", []];
         }
     }
 
-    function calc_action(){
-        return [ "views/tax/calc_tax.php", []];
+    function calc_action()
+    {
+        return ["views/tax/calc_tax.php", []];
     }
 
-    function calcTax_action(){
-        if(isset($_POST['thu_nhap']) && isset($_POST['so_nguoi']) && isset($_POST['thang']) && $_POST['thang'] != "" && $_POST['thu_nhap'] != "" && $_POST['so_nguoi'] != ""){
+    function calcTax_action()
+    {
+        if (isset($_POST['thu_nhap']) && isset($_POST['so_nguoi']) && isset($_POST['thang']) && $_POST['thang'] != "" && $_POST['thu_nhap'] != "" && $_POST['so_nguoi'] != "") {
             $thu_nhap = $_POST['thu_nhap'];
             $so_nguoi = $_POST['so_nguoi'];
             $thang = $_POST['thang'];
@@ -64,7 +69,7 @@ class taxController{
                 $thue = 0;
             } else {
                 if ($thu_nhap_thue <= 5 * 1000000) {
-                    $thue =  $thu_nhap_thue * 5 / 100;
+                    $thue = $thu_nhap_thue * 5 / 100;
                 } else if ($thu_nhap_thue <= 10 * 1000000) {
                     $thue = $thu_nhap_thue * 10 / 100 - 0.25 * 1000000;
                 } else if ($thu_nhap_thue <= 18 * 1000000) {
@@ -79,7 +84,7 @@ class taxController{
                     $thue = $thu_nhap_thue * 35 / 100 - 9.85 * 1000000;
                 }
             }
-            if(!isset($_SESSION['user_id'])){
+            if (!isset($_SESSION['user_id'])) {
                 return ["views/tax/login.php", []];
             }
             $user_id = $_SESSION['user_id'];
@@ -90,52 +95,54 @@ class taxController{
             $tax['status'] = "NO";
             $tax['user_id'] = $user_id;
             $status = "NO";
-            
+
             $taxModel = new tax();
             $table = $taxModel->table;
             $sql = "SELECT COUNT(*) AS so_luong_ban_ghi FROM $table";
             $result = $taxModel->query($sql);
             $row = $result->fetch_assoc();
-            $count = (int)$row['so_luong_ban_ghi'];
+            $count = (int) $row['so_luong_ban_ghi'];
             $id = $count + 1;
             $tax['id'] = $id;
-            
-            
-            if($taxModel->addTax($tax)){
+
+
+            if ($taxModel->addTax($tax)) {
                 // echo "OK";
-            }else{
-               
+            } else {
+
                 echo "Ko";
             }
 
             $sql = "SELECT * FROM $table WHERE user_id = $user_id and thang = $thang";
             $data = $taxModel->exeQuery($sql);
-            
-            
-            return ["views/tax/pay_tax.php",$data];
-        }        
+
+
+            return ["views/tax/pay_tax.php", $data];
+        }
     }
 
-    
-    function payTax_action($thang){
-        if(isset($thang) && $thang!= "" && (int)$thang){
+
+    function payTax_action($thang)
+    {
+        if (isset($thang) && $thang != "" && (int) $thang) {
             $user_id = $_SESSION['user_id'];
-            $thang = (int)$thang;
+            $thang = (int) $thang;
             $taxModel = new tax();
             $table = $taxModel->table;
             $sql = "SELECT * FROM $table WHERE thang = $thang and user_id = $user_id";
             $data = $taxModel->exeQuery($sql);
         }
-        if(!empty($data)){
+        if (!empty($data)) {
             // print_r($data);
-            return ["views/tax/payment.php",$data];
-        }else{
+            return ["views/tax/payment.php", $data];
+        } else {
             return ["views/tax/list.php", []];
         }
     }
 
-    function payment_action(){
-        if(isset($_POST['bank']) && isset($_POST['stk']) && $_POST['stk'] != ""){
+    function payment_action()
+    {
+        if (isset($_POST['bank']) && isset($_POST['stk']) && $_POST['stk'] != "") {
             $thang = $_POST['thang'];
             $user_id = $_SESSION['user_id'];
 
@@ -145,18 +152,16 @@ class taxController{
             $table = $taxModel->table;
             // echo $user_id;
             $sql = "UPDATE $table SET status = 'YES' WHERE user_id = $user_id AND thang = $thang";
-            if($taxModel->query($sql)){
+            if ($taxModel->query($sql)) {
                 // echo "OK";
-            }
-            else{
+            } else {
                 echo "KO";
             }
             $sql = "SELECT * FROM $table WHERE user_id = $user_id order by thang";
             $data = $taxModel->Query($sql);
 
             return ["views/tax/list.php", $data];
-        }
-        else{
+        } else {
             $user_id = $_SESSION['user_id'];
             $taxModel = new tax();
             $table = $taxModel->table;
@@ -166,23 +171,25 @@ class taxController{
         }
     }
 
-    function login_action(){
-        return ["views/tax/login.php",[]];
+    function login_action()
+    {
+        return ["views/tax/login.php", []];
     }
 
-    function signin_action(){
+    function signin_action()
+    {
         if (isset($_POST['login'])) {
             $username = $_POST['login_username'];
             $password = $_POST['login_password'];
-    
+
             $userModel = new User();
             $table = $userModel->table;
-        
+
             $sql = "SELECT * FROM $table WHERE username = '$username'";
             $result = $userModel->query($sql);
             $taxModel = new tax();
             $table = $taxModel->table;
-            
+
             if ($result->num_rows > 0) {
                 $row = $result->fetch_assoc();
                 $id = $row['id'];
@@ -190,7 +197,7 @@ class taxController{
                 if ($password == $row['password']) {
                     $_SESSION['username'] = $username;
                     $_SESSION['user_id'] = $id;
-                    
+
                     $sql = "SELECT * FROM $table WHERE user_id = $id order by thang";
                     $data = $taxModel->Query($sql);
                     // print_r($data);
@@ -203,9 +210,10 @@ class taxController{
             }
         }
     }
-    
 
-    function signup_action(){
+
+    function signup_action()
+    {
         if (isset($_POST['register'])) {
             $username = $_POST['reg_username'];
             $fullname = $_POST['reg_fullname'];
@@ -213,14 +221,14 @@ class taxController{
             $phone = $_POST['reg_phone'];
             // $address = $_POST['reg_address'];
             $email = $_POST['reg_email'];
-            
-            
+
+
             // Check if username already exists
             $userModel = new User();
             $table = $userModel->table;
             $sql = "SELECT * FROM $table WHERE username = '$username'";
             $result = $userModel->query($sql);
-        
+
             if ($result->num_rows > 0) {
                 echo "Username already exists!";
             } else {
@@ -229,10 +237,10 @@ class taxController{
                 // $sql = "SELECT COUNT(*) AS so_luong_ban_ghi FROM $table";
                 $result = $userModel->query($sql);
                 $row = $result->fetch_assoc();
-                $count = (int)$row['max_id'];
+                $count = (int) $row['max_id'];
                 $id = $count + 1;
                 $sql = "INSERT INTO $table (id, username, fullname, password, phone, email) VALUES ('$id', '$username', '$fullname', '$password', '$phone', '$email')";
-                
+
                 if ($userModel->query($sql) === TRUE) {
                     // echo "Registration successful!";
                     return ["views/tax/login.php", []];
@@ -241,52 +249,53 @@ class taxController{
                 }
             }
         }
-        
+
     }
 
-    function khaibao_action(){
+    function khaibao_action()
+    {
         return ["views/tax/khaibao_tax.php", []];
     }
 
-    function kbTax_action(){
-        if(isset($_POST['khaibao'])){
+    function kbTax_action()
+    {
+        if (isset($_POST['khaibao'])) {
             $tax_code = $_POST['ms_thue'];
             $dc = $_POST['dia_chi'];
             $ns = $_POST['ngay_sinh'];
-            $cccd = $_POST['cccd']; 
+            $cccd = $_POST['cccd'];
             $id = $_SESSION['user_id'];
 
             $userModel = new User();
             $table = $userModel->table;
-            
+
             $sql = "UPDATE $table SET birth = '$ns', tax_code = '$tax_code', dia_chi = '$dc', cccd = '$cccd' WHERE id = $id";
-            
-            if($userModel->query($sql)){
+
+            if ($userModel->query($sql)) {
                 // echo "OK";
-            }
-            else{
+            } else {
                 echo "KO";
             }
-            
+
             $taxModel = new tax();
             $table = $taxModel->table;
             $sql = "SELECT * FROM $table WHERE user_id = $id order by thang";
             $data = $taxModel->Query($sql);
             return ["views/tax/list.php", $data];
-        }
-        else{
+        } else {
             return ["views/tax/khaibao_tax.php", []];
         }
     }
 
-    function logout_action(){
+    function logout_action()
+    {
         $_SESSION = [];
         session_unset();
         session_destroy();
         return ["views/tax/login.php", []];
     }
 
-    
+
 
     function export_action()
     {
@@ -296,11 +305,11 @@ class taxController{
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
 
-        $header = ['Tháng','Tổng thu nhập','Số người phụ thuộc','Thuế phải trả','Trạng thái'];
+        $header = ['Tháng', 'Tổng thu nhập', 'Số người phụ thuộc', 'Thuế phải trả', 'Trạng thái'];
         foreach ($header as $index => $value) {
-            $sheet->setCellValue([$index+1,1],$value);
+            $sheet->setCellValue([$index + 1, 1], $value);
         }
-//$count=1;
+        //$count=1;
 //for ($i = 0, $l = sizeof($taxList); $i < $l; $i++) { // row $i
 //    $j = 0;
 //    foreach ($taxList[$i] as $k => $v) { // column $j
@@ -309,12 +318,12 @@ class taxController{
 //    }
 //}
         $numRow = 2;
-        foreach($taxList as $tax) {
-            $sheet->setCellValue([1,$numRow],$tax['thang'] );
-            $sheet->setCellValue([2,$numRow],$tax['tongThuNhap'] );
-            $sheet->setCellValue([3,$numRow],$tax['soNguoiPhuThuoc'] );
-            $sheet->setCellValue([4,$numRow],$tax['thue'] );
-            $sheet->setCellValue([5,$numRow],$tax['status'] );
+        foreach ($taxList as $tax) {
+            $sheet->setCellValue([1, $numRow], $tax['thang']);
+            $sheet->setCellValue([2, $numRow], $tax['tongThuNhap']);
+            $sheet->setCellValue([3, $numRow], $tax['soNguoiPhuThuoc']);
+            $sheet->setCellValue([4, $numRow], $tax['thue']);
+            $sheet->setCellValue([5, $numRow], $tax['status']);
             $numRow++;
         }
 
