@@ -399,7 +399,7 @@ class taxController
     {
         $dc_regex = '/^[a-zA-Z0-9\s\.,#\-]+$/';
 
-        $birth_regex = '/^(0[1-9]|[1-2][0-9]|3[0-1])-(0[1-9]|1[0-2])-\d{4}$/';
+        $birth_regex = '/^\d{4}-\d{2}-\d{2}$/';
         $tax_regex = '/^\d{10}$/'; // Assumes phone number is 10 digits
         $cccd_regex = '/^\d{10}$/';
         $id_regex = '/^\d+$/';
@@ -410,6 +410,7 @@ class taxController
         }
 
         if (!preg_match($birth_regex, $ns)) {
+            echo $ns;
             echo "Invalid birth of date format!";
             return "Invalid birth of date format!";
         }

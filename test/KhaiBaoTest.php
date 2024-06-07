@@ -10,7 +10,7 @@ class KhaiBaoTest extends TestCase
     {
         $tax_code = "1234567890";
         $dc = "Nghe An";
-        $ns = "29-06-2003";
+        $ns = "2003-06-29";
         $cccd = "1234567890";
         $id = "1";
 
@@ -30,7 +30,7 @@ class KhaiBaoTest extends TestCase
 
         $tax_code = "12345";
         $dc = "Nghe An";
-        $ns = "29-06-2003";
+        $ns = "2003-06-29";
         $cccd = "12345";
         $id = "1";
 
